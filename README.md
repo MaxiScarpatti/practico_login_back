@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Django Backend API
 
 API backend con Django REST Framework + JWT + PostgreSQL.
@@ -136,3 +137,6 @@ python manage.py test
 1) Registrar
 2) Loguear y guardar `access`
 3) Enviar `Authorization: Bearer <access>` en cada request
+=======
+# practico_login_back
+>>>>>>> 168814581b260876e326f823cb2ef2e76fb00dd7
