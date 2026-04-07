@@ -1,142 +1,167 @@
-<<<<<<< HEAD
-# Django Backend API
+# 🔐 API de Autenticación con Django REST
 
-API backend con Django REST Framework + JWT + PostgreSQL.
+Este proyecto es un backend desarrollado con Django y Django REST Framework que implementa un sistema completo de autenticación de usuarios.
 
-Incluye soporte CORS con django-cors-headers para integración con frontend Angular.
+Lo desarrollé como práctica integradora, enfocándome en entender bien cómo funcionan los flujos reales de login, manejo de tokens y recuperación de contraseñas.
 
-## Requisitos
+---
 
-- Python 3.13+ (o superior)
-- PostgreSQL
-- Virtual environment (recomendado)
-- django-cors-headers (se instala automáticamente con requirements.txt)
+## 🚀 ¿Qué incluye?
 
-## Instalación rápida
+- Registro de usuarios
+- Login con JWT
+- Refresh token
+- Recuperación de contraseña con OTP
+- Reset de contraseña
+- Manejo de errores y validaciones
+- Estructura preparada para escalar
 
-```powershell
-cd d:\ISPC\ProgramacionIII\ISPC-ProgIII
+---
+
+## 🧰 Tecnologías usadas
+
+- Python
+- Django
+- Django REST Framework
+- SimpleJWT
+- PostgreSQL (o SQLite en desarrollo)
+
+---
+
+## ⚙️ Cómo levantar el proyecto
+
+### 1. Clonar repo
+`````````bash
+git clone <url-del-repo>
+cd practico_login_back
+` `` `
+
+### 2. Crear entorno virtual
+````````bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+` `` `
+
+### 3. Activar entorno
+
+**Windows:**
+```````bash
+.\.venv\Scripts\activate
+` `` `
+
+**Linux / Mac:**
+``````bash
+source .venv/bin/activate
+` `` `
+
+### 4. Instalar dependencias
+`````bash
 pip install -r requirements.txt
-```
+` `` `
 
-## Configurar PostgreSQL
+---
 
-Edita `backend/settings.py` si tu usuario/password/host/puerto difieren:
-
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'backend_db',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-```
-
-Crea la base de datos si no existe:
-
-```powershell
-psql -U postgres -c "CREATE DATABASE backend_db;"
-```
-
-## Migraciones
-
-```powershell
+## 🗄️ Base de datos
+````bash
 python manage.py makemigrations
 python manage.py migrate
-```
+` `` `
 
-## Ejecutar servidor
+---
 
-```powershell
+## ▶️ Ejecutar servidor
+```bash
 python manage.py runserver
+` `` `
+
+Ir a: `http://127.0.0.1:8000/`
+
+---
+
+## 🔐 Endpoints principales
+
+### Registro
 ```
+POST /api/register/
+` `` `
 
-## Endpoints
+### Login
+````
+POST /api/login/
+` `` `
 
-### POST `/api/register/`
-
-Body JSON:
-
-```json
+Devuelve:
+````json
 {
-  "username": "user1",
-  "email": "user1@example.com",
-  "password": "Testpass123"
-}
-```
-
-Respuesta (201):
-
-```json
-{
-  "username": "user1",
-  "email": "user1@example.com"
-}
-```
-
-### POST `/api/login/`
-
-Body JSON:
-
-```json
-{
-  "username": "user1",
-  "password": "Testpass123"
-}
-```
-
-Respuesta (200):
-
-```json
-{
-  "refresh": "...",
-  "access": "...",
+  "access": "token",
+  "refresh": "token",
   "user": {
     "id": 1,
-    "username": "user1",
-    "email": "user1@example.com"
+    "username": "user"
   }
+
+``` `
+
+### Recuperar contraseña (OTP)
+````
+POST /api/forgot-password/
+` `` `
+
+Body:
+````json
+{
+  "email": "user@example.com"
 }
-```
+``` `
 
-### Autenticación en APIs protegidas
+> 👉 El código OTP se muestra en consola (modo desarrollo)
 
-Enviar header:
+### Resetear contraseña
+````
+POST /api/reset-password/
+` `` `
 
-```
-Authorization: Bearer <access token>
-```
+Body:
+````json
+{
+  "email": "user@example.com",
+  "otp": "123456",
+  "new_password": "NuevaClave123"
+}
+``` `
 
-## Pruebas (tests)
+---
 
-```powershell
-python manage.py test
-```
+## 🔄 Flujo implementado
 
-## Notas de seguridad
+1. Usuario se registra o inicia sesión
+2. Si olvida contraseña:
+   - Solicita OTP
+   - Backend genera el código
+   - Usuario lo ingresa junto con la nueva contraseña
+3. Se actualiza la contraseña correctamente
 
-- La contraseña se guarda como hash seguro (PBKDF2 por defecto).
-- La app también usa `django-encrypted-model-fields` para campos sensibles.
-- El backend permite solicitudes CORS desde Angular (`localhost:4200`) usando django-cors-headers.
+---
 
-## Estructura de carpetas
+## 🧠 Cosas que aprendí haciendo esto
 
-- `manage.py` — comandos Django
-- `backend/` — configuración del proyecto
-- `accounts/` — app con auth/registro/login
-- `accounts/tests.py` — tests automáticos
+- Cómo funciona JWT en un sistema real
+- Manejo de autenticación en APIs
+- Validaciones backend (no confiar en el frontend)
+- Flujo completo de recuperación de contraseña
+- Manejo de errores HTTP (400, 401, 500)
 
-## Para Angular
+---
 
-1) Registrar
-2) Loguear y guardar `access`
-3) Enviar `Authorization: Bearer <access>` en cada request
-=======
-# practico_login_back
->>>>>>> 168814581b260876e326f823cb2ef2e76fb00dd7
+## ⚠️ Notas
+
+- El OTP se imprime en consola (solo desarrollo)
+- En un entorno real debería enviarse por email
+- Los endpoints de auth usan `AllowAny`
+
+---
+
+## 📌 Autor
+
+Proyecto académico — Tecnicatura en Desarrollo de Software  
+Enfocado en backend y desarrollo web
+````
